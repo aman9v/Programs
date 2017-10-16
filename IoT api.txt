@@ -1,0 +1,6 @@
+
+http://www.sensorup.com/docs/?javascript#post42
+https://github.com/eclipse/whiskers
+https://github.com/eclipse/whiskers/blob/master/lib/models/datastream.js
+
+http://iot-epi.eu/project/symbiote/
