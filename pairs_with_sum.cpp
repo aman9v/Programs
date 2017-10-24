@@ -22,7 +22,9 @@ int countPairs(int *arr, int k, int n) {
 int main() {
     int arr[] = {1, 3, 46, 1, 3, 9};
     int n = sizeof(arr)/ sizeof(arr[0]);
-    int count = countPairs(arr, 47, n);
+    int k;
+    cin >> k;
+    int count = countPairs(arr, k, n);
     cout << count;    
     return 0;
     }
