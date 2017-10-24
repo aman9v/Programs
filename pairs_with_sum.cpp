@@ -14,8 +14,7 @@ int countPairs(int *arr, int k, int n) {
                 hash.erase(k - arr[i]);
                 hash.erase(arr[i]);
                 }
-            }
-            
+            }  
         }
     return count;
     }
