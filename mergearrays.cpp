@@ -2,10 +2,11 @@
 using namespace std;
 
 vector<int> mergeArrays(vector<int> v1, vector<int> v2) {
-    int n = v1.size();
-    vector<int> sortedArray(8);
+    int n1 = v1.size();
+    int n2 = v2.size();
+    vector<int> sortedArray(n1+n2);
     int one = 0, two = 0, res = 0;
-    while(one < n && two < n) {
+    while (one < n && two < n) {
         if (v1[one] == v2[two]) {
             sortedArray[res++] = v1[one++];
             sortedArray[res++] = v2[two++];
