@@ -43,6 +43,32 @@ class Graph {
                 }
             DFSUtil(strt, visited);    
             }    
+        
+        void BFSUtil(int strt, bool *visited) {
+            queue<int> nodesToVisit;
+            nodesToVisit.push(strt);
+            
+            while (!nodesToVisit.empty()) {
+                int currentNode = nodesToVisit.front();
+                nodesToVisit.pop();
+                visited[currentNode] = true;
+                cout << currentNode << " ";
+                for (int &v : adjList[currentNode]) {
+                    if (!visited[v]) {
+                        nodesToVisit.push(v);
+                        visited[v] = true;
+                    }
+            }
+                }
+            }
+        
+        void BFS(int strt) {
+            bool *visited = new bool[V];
+            for (int i = 0; i < V; i++) {
+                visited[i] = false;
+                }
+            BFSUtil(strt, visited);    
+            }    
     };
 
 int main() {
@@ -54,6 +80,9 @@ int main() {
     g.addEdge(2, 3);
     g.addEdge(3, 3);
     // g.printGraph(0);
+    cout << "DFS IS: " ;
     g.DFS(2);
+    cout << "\nBFS IS: " ;
+    g.BFS(2);
     return 0;
     }
