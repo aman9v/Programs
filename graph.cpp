@@ -22,8 +22,26 @@ class Graph {
                 for (int &v : adjList[i])
                     cout << v << " "; 
                 cout << endl;    
-                } 
+                }
                 
+            }
+        
+        void DFSUtil(int str, bool *visited) {
+            visited[str] = true;
+            cout << str << " ";
+            
+            for (int &v : adjList[str])
+                if (!visited[v])
+                    DFSUtil(v, visited);
+                    
+            }    
+
+        void DFS(int strt) {
+            bool *visited = new bool[V];
+            for (int i = 0; i < V; i++) {
+                visited[i] = false;
+                }
+            DFSUtil(strt, visited);    
             }    
     };
 
@@ -35,6 +53,7 @@ int main() {
     g.addEdge(2, 0);
     g.addEdge(2, 3);
     g.addEdge(3, 3);
-    g.printGraph(0);
+    // g.printGraph(0);
+    g.DFS(2);
     return 0;
     }
