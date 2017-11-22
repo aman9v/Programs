@@ -11,7 +11,8 @@ void swap(string &num, int i, int j) {
 void odd2even(string &num) {
 	int n = num.size();
 	bool flag = false;
-	int i = 0; int index = 0;
+	int i = 0; 
+	int index = 0;
 	while (i <= n-1) {
 		int x = num[i] - '0';
 		if (x % 2 == 0) {
