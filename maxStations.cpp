@@ -6,8 +6,8 @@ int maxStations(vector<int> arr, vector<int> dep) {
 	int maxSt = 0;
 	multimap<int, char> order;
 	for (int i = 0; i < arr.size(); i++) {
-		order.insert(make_pair(arr[i], 'a'));
-		order.insert(make_pair(dep[i], 'd'));
+		order.insert({arr[i], 'a'});
+		order.insert({dep[i], 'd'});
 	}
 	
 	// this works because elements in a multimap are sorted by keys by default
