@@ -17,7 +17,7 @@ void printSubstrings(string s, set<string> &stringSet) {
 						string rs = newString.substr(0, k) + newString.substr(k + 1);
 						printSubstrings(rs, stringSet);
 					}
-				}
+				} else j--;
 
 			}
 		}
