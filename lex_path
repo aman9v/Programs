@@ -1,0 +1,89 @@
+/* Author : Pranav
+BITS PILANI Hyderabad Campus */
+#include <vector>
+#include <list>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+#include <cctype>
+#include <cstring>
+//#include <sstream>
+using namespace std;
+
+#define sz(a) int((a).size())
+#define pb push_back
+#define pop pop_back
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end(); i++)
+#define present(c,x) ((c).find(x) != (c).end())
+#define cpresent(c,x) (find(all(c),x) != (c).end())
+#define fr(i,n) for(i=0; i<n; i++)
+#define N 10005
+#define INF 1000000
+#define mod 1000000007
+#define f first
+#define s second
+#define mp(x,y) make_pair(x,y)
+#define sc(x) scanf("%lld",&x);
+#define pr(x) printf("%lld\n",x);
+typedef long long ll;
+ll fact[30]={0};
+ll compute(ll x,ll y){
+
+if(x>=y)
+      return fact[x]/(fact[x-y]*fact[y]);
+      else{
+          return 0;
+      }
+}
+void findKthPermutation(ll k,ll n,ll m){
+    ll partition;
+
+    if(n==1&&m==0){
+        cout<<"H";return;
+    }
+    if(n==0&&m==1){
+        cout<<"V";return;
+    }
+    
+
+    partition=compute(n+m-1,m);
+   // cout<<partition<<endl;
+    
+    if(k<=partition){
+        cout<<"H";
+        findKthPermutation(k,n-1,m);
+    }
+    else{
+        cout<<"V";
+        findKthPermutation(k-partition,n,m-1);
+    }
+    return ;
+}
+
+int main(){
+    ll t,n,m,k;
+    ios::sync_with_stdio(0);
+    cin>>t;
+   //t=1;
+    fact[0]=1;
+    for(ll i=1;i<30;i++){
+        fact[i]=fact[i-1]*i;
+    }
+    while(t--){
+        cin>>n>>m>>k;
+        k++;
+
+        findKthPermutation(k,n,m);
+        cout<<endl;
+
+
+    }
+    return 0;
+ }

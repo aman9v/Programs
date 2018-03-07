@@ -29,7 +29,7 @@ string findZeroOne(int num) {
 }
 
 int main() {
-	int num = 12;
+	int num = 4;
 	string strNum = findZeroOne(num);
 	print(strNum);
 	return 0;
