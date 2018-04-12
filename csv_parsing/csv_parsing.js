@@ -5,10 +5,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // const {dir} = require('./dir_read');
-const {mongoose} = require('./db/mongoose'); // ES6 object destructuring
-const {Things} = require('./models/Things');
-const {Observations} = require('./models/Observations');
-
+const { mongoose } = require('./db/mongoose'); // ES6 object destructuring
+const { Things } = require('./models/Things');
+const { Observations } = require('./models/Observations');
 
 var app = express();
 
@@ -44,13 +43,16 @@ app.use(bodyParser.json());
 //   console.log('Error inserting the document');
 // });
 
-app.get('/things', (req, res) => {
+app.get('/Things', (req, res) => {
   Things.find().then((Things) => {
-    res.send({Things});
+    res.send(Object.assign({}, {"@iot.count": Things.length }, Things, {
+      "@iot.selfLink": "localhost:3000/OGCSensorThings/v1.0/Things"
+    }));
   }, (error) => res.status(404).send(error));
 });
 
-app.post('/things', (req, res) => {
+
+app.post('Things', (req, res) => {
   var newThing  = new Things(req.body);
   newThing.save().then((thing) => {
     res.send(thing);

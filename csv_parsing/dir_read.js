@@ -2,12 +2,12 @@
 const dir = require('node-dir');
 const csv = require('fast-csv');
 
-const {mongoose} = require('./db/mongoose'); // ES6 object destructuring
-const {Things} = require('./models/Things');
-const {Observations} = require('./models/Observations');
+const { mongoose } = require('./db/mongoose'); // ES6 object destructuring
+const { Things } = require('./models/Things');
+const { Observations } = require('./models/Observations');
 
 var __dirname = './sensor_csvs/windspeed';
-var allFiles = dir.files(__dirname, {sync:true});
+var allFiles = dir.files(__dirname, { sync:true });
 var Files = allFiles.splice(1, 1);
 
 

@@ -1,6 +1,6 @@
 /*jshint esversion:6*/
 const mongoose = require('mongoose');
-const {Things} = require('./Things');
+const { Things } = require('./Things');
 
 var SensorObsSchema = new mongoose.Schema({
   phenomenonTime: {
@@ -16,9 +16,9 @@ var SensorObsSchema = new mongoose.Schema({
     temperature: Number,
     humidity: Number,
   },
-  iot_id: {type: mongoose.Schema.Types.Number, ref: 'Things'},
+  iot_id: { type: mongoose.Schema.Types.Number, ref: 'Things' },
 });
 
 var Observations = mongoose.model('Observations', SensorObsSchema);
 
-module.exports = {Observations};
+module.exports = { Observations };

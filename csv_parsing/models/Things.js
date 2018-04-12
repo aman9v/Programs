@@ -3,18 +3,28 @@ const mongoose = require('mongoose');
 
 var LocationSubSchema = new mongoose.Schema({
     name: String,
-    geo: {
-      type: [Number], // creates an array of numbers
-      // coordinates: [Number], // for storing coordinates
-      index: '2dsphere'
+    description: String,
+    encodingType: {
+      type: String,
+      default: "application/vnd.geo+json"
+    },
+    location: {
+      type: { type: String, default:'Point' },
+      coordinates: {
+        type: [Number],
+        index: "2dsphere"
+      }
     }
 });
 
+
+
 var ThingsSchema = new mongoose.Schema({
-  iot_id: {
+  "@iot.id": {
     type: Number,
     required: true,
     unique: true,
+    alias: "id"
   },
   name: {
     type: String,
@@ -29,10 +39,10 @@ var ThingsSchema = new mongoose.Schema({
     trim: true,
   },
   properties: { // optional properties
-    condition: String,
-    Use_Case: String,
+    "Deployment condition": String,
+    "Case Used": String,
   },
-  location: [LocationSubSchema], // a thing could be deployed at more than one location
+  Locations: [LocationSubSchema], // a thing could be deployed at more than one location
 });
 
 var Things = mongoose.model('Things', ThingsSchema);

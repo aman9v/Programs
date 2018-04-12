@@ -18,7 +18,7 @@ var asyncAdd = (a, b) => {
 //  // WE CAN DO ONE OF THESE ACTIONS ONLY ONCE.
 // });
 //
-// somePromise.then((message) => { // Is call only if the promise gets fulfilled or is resolved. Arguments could be a message or user object
+// somePromise.then((message) => { // Is called only if the promise gets fulfilled or is resolved. Arguments could be a message or user object
 //     console.log('Success:', message)                            // It is called with the value passed to resolve.
 // }, (error) => {
 //   console.log('Error:', error);
