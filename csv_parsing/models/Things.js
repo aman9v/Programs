@@ -47,4 +47,4 @@ var ThingsSchema = new mongoose.Schema({
 
 var Things = mongoose.model('Things', ThingsSchema);
 
-module.exports = {Things};
+module.exports = { Things };

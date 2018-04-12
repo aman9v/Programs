@@ -3,7 +3,7 @@
 const csv = require('fast-csv');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const { entities } = require("./constants/constants");
 // const {dir} = require('./dir_read');
 const { mongoose } = require('./db/mongoose'); // ES6 object destructuring
 const { Things } = require('./models/Things');
@@ -12,7 +12,6 @@ const { Observations } = require('./models/Observations');
 var app = express();
 
 app.use(bodyParser.json());
-
 
 // csv
 //   .fromPath("./rainGauge_Fri_Aug_11_12_12_51_2017.csv", {headers: true})
@@ -43,6 +42,16 @@ app.use(bodyParser.json());
 //   console.log('Error inserting the document');
 // });
 
+app.get("/", (req, res) => {
+  const value = entities.map((entity) => {
+    return {
+        name: entity,
+        url: "localhost:8080/" + entity
+    };
+  });
+  res.send({value: value});
+});
+
 app.get('/Things', (req, res) => {
   Things.find().then((Things) => {
     res.send(Object.assign({}, {"@iot.count": Things.length }, Things, {
@@ -52,7 +61,7 @@ app.get('/Things', (req, res) => {
 });
 
 
-app.post('Things', (req, res) => {
+app.post('/Things', (req, res) => {
   var newThing  = new Things(req.body);
   newThing.save().then((thing) => {
     res.send(thing);
