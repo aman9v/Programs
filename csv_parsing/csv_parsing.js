@@ -85,7 +85,7 @@ app.get('/observations/:id', (req, res) => {
     if (!observations) {
       res.sendStatus(404);
     }
-    res.send({observations});
+    res.send({ observations });
   })
   .catch((error) => {
     res.status(404).send(error);
