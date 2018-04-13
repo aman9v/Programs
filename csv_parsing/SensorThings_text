@@ -1,0 +1,2 @@
+SensorThings allows for modeling any IoT device as a thing. Each thing has a location and a datastream that is a collection
+of observations about an observed property and coming from the same sensor.
