@@ -8,6 +8,7 @@ const { entities } = require("./constants/constants");
 const { mongoose } = require('./db/mongoose'); // ES6 object destructuring
 const { Things } = require('./models/Things');
 const { Observations } = require('./models/Observations');
+const { Locations } = require('./models/Locations');
 
 var app = express();
 
@@ -54,21 +55,50 @@ app.get("/", (req, res) => {
 
 app.get('/Things', (req, res) => {
   Things.find().then((Things) => {
-    res.send(Object.assign({}, {"@iot.count": Things.length }, Things, {
+    res.send(Object.assign({}, { "@iot.count": Things.length }, Things, {
       "@iot.selfLink": "localhost:3000/OGCSensorThings/v1.0/Things"
     }));
   }, (error) => res.status(404).send(error));
 });
 
-
-app.post('/Things', (req, res) => {
-  var newThing  = new Things(req.body);
-  newThing.save().then((thing) => {
-    res.send(thing);
-  }, (error) => {
-    res.status(200).send(error);
+app.get('/Locations', (req, res) => {
+  Locations.find().then((locations) => {
+    res.send(Object.assign())
   });
 });
+
+app.post("/Locations", (req, res) => {
+  var newLocation = new Locations(req.body);
+  newLocation.save().then((location) => {
+    res.send(Object.assign({}, { "@iot.id": location._id, "@iot.selfLink": "localhost:3000/Locations/" + location._id }, location.toObject(), { "Things@iot.navigationLink": "link", "HistoricalLocations@iot.navigationLink": "link"}));
+  }, (error) => res.status(400).send(error));
+});
+
+app.get("Things/:id", (req, res) => {
+
+})
+
+app.post("/Things", (req, res) => {
+  var newThing = new Things(req.body);
+  newThing.save().then((thing) => {
+    if (req.body["Locations"]) {
+      if (req.body["Locations"][0]["@iot.id"]) {
+        let locationId = req.body["Locations"][0]["@iot.id"];
+        Locations.findOne({ _id: locationId }).then((location) => {
+          res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
+        }, (error) => res.status(404).send("No location with the given id exists"));
+      } else {
+        var newLoc = new Locations(req.body["Locations"][0]);
+        newLoc.save().then((location) => {
+          res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
+        }, (error) => res.status(400).send(error));
+      }
+    } else {
+      res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": "thing without any location created" }));
+    }
+  }, (error) => res.status(400).send(error));
+});
+
 
 app.get('/observations', (req, res) => {
   Observations.find().then((obs) => {

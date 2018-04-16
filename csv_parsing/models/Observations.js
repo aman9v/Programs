@@ -9,14 +9,18 @@ var SensorObsSchema = new mongoose.Schema({
     minlength: 1, // [value<NUMBER>, [custom erorr message]]
     trim: true // removes any leading or trailing whitespaces
   },
-  results: {
+  result: {
     // type: Boolean,
     // required: true,
     // trim: true,
     temperature: Number,
     humidity: Number,
   },
-  iot_id: { type: mongoose.Schema.Types.Number, ref: 'Things' },
+  resultTime: {
+    type: Date,
+    required: true
+  },
+  // "@iot.id": [{ type: mongoose.Schema.Types.ObjectID, ref: 'Things' }],
 });
 
 var Observations = mongoose.model('Observations', SensorObsSchema);

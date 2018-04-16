@@ -19,17 +19,17 @@ var LocationSubSchema = new mongoose.Schema({
     location: {
       type: {
         type: String,
-        default:'Point'
+        default:'Point',
+        required: true
       },
       coordinates: {
         type: [Number],
-        index: "2dsphere"
+        index: "2dsphere",
+        required: true
       },
-      required: true
-    },
-    Things: {
-
     }
 });
 
-module.exports = { LocationSubSchema };
+var Locations = mongoose.model("Locations", LocationSubSchema);
+
+module.exports = { Locations };

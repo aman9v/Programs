@@ -18,11 +18,6 @@ const DataStreamsSchema = new mongoose.Schema({
     type: Object,
     required: true
   },
-  observationType: {
-    type:
-  }
-
-
 });
 
 
