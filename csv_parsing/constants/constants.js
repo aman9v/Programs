@@ -22,6 +22,7 @@ const entities = [
 const encodingTypes = {
   UNKNOWN: 'unknown',
   GEO_JSON: 'application/vnd.geo+json',
+  PDF: 'application/pdf',
   SENSOR_ML: 'http://www.opengis.net/doc/IS/SensorML/2.0',
   TEXT_HTML: 'text/html',
   LOCATION_TYPE: 'http://example.org/location_types#GeoJSON',

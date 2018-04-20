@@ -9,6 +9,7 @@ const { mongoose } = require('./db/mongoose'); // ES6 object destructuring
 const { Things } = require('./models/Things');
 const { Observations } = require('./models/Observations');
 const { Locations } = require('./models/Locations');
+const { Sensors } = require('./models/Sensors');
 
 var app = express();
 
@@ -63,7 +64,12 @@ app.get('/Things', (req, res) => {
 
 app.get('/Locations', (req, res) => {
   Locations.find().then((locations) => {
-    res.send(Object.assign())
+    const value = locations.map((location) => {
+      return {
+
+      }
+    });
+    res.send(Object.assign({}, { "@iot.count": locations.length }, { values: locations }, ))
   });
 });
 
@@ -74,9 +80,17 @@ app.post("/Locations", (req, res) => {
   }, (error) => res.status(400).send(error));
 });
 
-app.get("Things/:id", (req, res) => {
+app.get("/Things/:id", (req, res) => {
+  const id = req.params.id;
 
-})
+  Things.findOne({ _id: id }, '-__v').then((thing) => {
+    res.send(Object.assign({}, { "@iot.id": thing._id, "@iot.selfLink": "localhost:3000/Things/" + thing._id  }, thing.toObject(), {
+      "Datastreams@iot.navtigationLink": "localhost:3000/Things/" + thing._id + "/Datastreams",
+      "HistoricalLocations@iot.navtigationLink": "localhost:3000/Things/" + thing._id + "/HistoricalLocations",
+      "Locations@iot.navtigationLink": "localhost:3000/Things/" + thing._id + "/Locations"
+    }));
+  }, (error) => res.status(404).send('No thing with this id found'));
+});
 
 app.post("/Things", (req, res) => {
   var newThing = new Things(req.body);
@@ -99,6 +113,14 @@ app.post("/Things", (req, res) => {
   }, (error) => res.status(400).send(error));
 });
 
+app.post("/Sensors", (req, res) => {
+  const newSensor = new Sensors(req.body);
+  newSensor.save().then((sensor) => {
+    res.send(Object.assign({}, { "@iot.id": sensor._id, "@iot.selfLink": `localhost:3000/Sensors/${sensor._id}` }, sensor.toObject(), {
+      "Datastreams@iot.navigationLink": `localhost:3000/Sensors/${sensor._id}/Datastreams`
+    }));
+  }, (error) => res.status(400).send("Error creating a new sensor"));
+});
 
 app.get('/observations', (req, res) => {
   Observations.find().then((obs) => {
@@ -111,7 +133,7 @@ app.get('/observations', (req, res) => {
 app.get('/observations/:id', (req, res) => {
   var id = req.params.id;
 
-  Observations.find({iot_id: id}).then((observations) => {
+  Observations.find({ iot_id: id }).then((observations) => {
     if (!observations) {
       res.sendStatus(404);
     }
@@ -125,3 +147,6 @@ app.get('/observations/:id', (req, res) => {
 app.listen(3000, () => {
   console.log("Server up and running on port 3000");
 });
+
+
+// path in mongoose is same as fields in NoSQL or columns in relational database.
