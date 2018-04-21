@@ -92,26 +92,74 @@ app.get("/Things/:id", (req, res) => {
   }, (error) => res.status(404).send('No thing with this id found'));
 });
 
+app.get("/Things/:id/Locations", (req, res) => {
+  let id = req.params.id;
+  let thingLocations;
+  Things.findById({ _id: id }).then((thing) => {
+    Locations.findById({ _id: thing.locations[0]}).then((loc) => {
+      res.send(loc);
+    });
+  });
+});
+
 app.post("/Things", (req, res) => {
-  var newThing = new Things(req.body);
-  newThing.save().then((thing) => {
-    if (req.body["Locations"]) {
-      if (req.body["Locations"][0]["@iot.id"]) {
-        let locationId = req.body["Locations"][0]["@iot.id"];
-        Locations.findOne({ _id: locationId }).then((location) => {
-          res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
-        }, (error) => res.status(404).send("No location with the given id exists"));
-      } else {
-        var newLoc = new Locations(req.body["Locations"][0]);
-        newLoc.save().then((location) => {
+  const { name, description, properties } = req.body;
+  if (req.body["Locations"]) {
+    if (req.body["Locations"][0]["@iot.id"]) {
+      const locationId = req.body["Locations"][0]["@iot.id"];
+      Locations.findOne({ _id: locationId }).then((location) => {
+        var newThing = new Things({
+          name: name,
+          description: description,
+          properties: properties,
+          locations: location
+        });
+        newThing.save().then((thing) => {
           res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
         }, (error) => res.status(400).send(error));
-      }
+      }, (error) => res.status(404).send("No location with the given id exists"));
     } else {
-      res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": "thing without any location created" }));
+      var newLoc = new Locations(req.body["Locations"][0]);
+      newLoc.save().then((location) => {
+        var newThing = new Things({
+          name,
+          description,
+          properties,
+          locations: location
+        });
+        newThing.save().then((thing) => {
+          res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
+        });
+      }, (error) => res.status(400).send(error));
     }
-  }, (error) => res.status(400).send(error));
+  } else {
+    var newThing = new Things(req.body);
+    newThing.save().then((thing) => {
+      res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": "thing without any location created" }));
+    }, (error) => res.status(400).send(error));
+  }
 });
+
+// app.post("/Things", (req, res) => {
+//   var newThing = new Things(req.body);
+//   newThing.save().then((thing) => {
+//     if (req.body["Locations"]) {
+//       if (req.body["Locations"][0]["@iot.id"]) {
+//         let locationId = req.body["Locations"][0]["@iot.id"];
+//         Locations.findOne({ _id: locationId }).then((location) => {
+//           res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
+//         }, (error) => res.status(404).send("No location with the given id exists"));
+//       } else {
+//         var newLoc = new Locations(req.body["Locations"][0]);
+//         newLoc.save().then((location) => {
+//           res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": location._id }));
+//         }, (error) => res.status(400).send(error));
+//       }
+//     } else {
+//       res.send(Object.assign({}, { "@iot.id": thing._id }, thing.toObject(), { "Locations@iot.navigationLink": "thing without any location created" }));
+//     }
+//   }, (error) => res.status(400).send(error));
+// });
 
 app.post("/Sensors", (req, res) => {
   const newSensor = new Sensors(req.body);

@@ -1,5 +1,6 @@
 /*jshint esversion:6*/
 const mongoose = require('mongoose');
+const { Locations } = require("./Locations");
 
 var ThingsSchema = new mongoose.Schema({
   name: {
@@ -17,7 +18,7 @@ var ThingsSchema = new mongoose.Schema({
   properties: { // optional properties
     type: Object,
   },
-  // Locations: [{ type: mongoose.Schema.Types.ObjectID, ref: 'LocationSubSchema' }], // a thing could be deployed at more than one location,
+  locations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Locations' }] // a thing could be deployed at more than one location,
 });
 
 var Things = mongoose.model('Things', ThingsSchema);
