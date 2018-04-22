@@ -19,6 +19,16 @@ const entities = [
   "FeaturesOfInterest"
 ];
 
+const obsTypeUrl = 'http://www.opengis.net/def/observationType/OGC-OM/2.0/';
+
+const observationTypes = {
+  OM_CATEGORY_OBSERVATION: obsTypeUrl + 'OM_CategoryObservation',
+  OM_COUNT_OBSERVATION: obsTypeUrl + 'OM_CountObservation',
+  OM_MEASUREMENT: obsTypeUrl + 'OM_Measurement',
+  OM_OBSERVATION: obsTypeUrl + 'OM_Observation',
+  OM_TRUTH_OBSERVATION: obsTypeUrl + 'OM_TruthObservation'
+};
+
 const encodingTypes = {
   UNKNOWN: 'unknown',
   GEO_JSON: 'application/vnd.geo+json',
@@ -29,4 +39,4 @@ const encodingTypes = {
   TYPE_DESCRIPTION: 'http://schema.org/description'
 };
 
-module.exports = { entities, encodingTypes, iotId, iotCount, iotSelfLink, iotNextLink };
+module.exports = { entities, encodingTypes, observationTypes, iotId, iotCount, iotSelfLink, iotNextLink };

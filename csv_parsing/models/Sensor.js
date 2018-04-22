@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { encodingTypes } = require("../constants/constants");
 
 
-const sensorSchema = new mongoose.Schema({
+const SensorSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -24,6 +24,6 @@ const sensorSchema = new mongoose.Schema({
   }
 });
 
-const Sensors = mongoose.model("Sensors", sensorSchema);
+const Sensor = mongoose.model("Sensors", SensorSchema);
 
-module.exports = { Sensors };
+module.exports = { Sensor };

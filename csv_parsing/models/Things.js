@@ -18,7 +18,8 @@ var ThingsSchema = new mongoose.Schema({
   properties: { // optional properties
     type: Object,
   },
-  locations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Locations' }] // a thing could be deployed at more than one location,
+  locations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Locations' }], // a thing could be deployed at more than one location,
+  Datastream: [{ type: mongoose.Schema.Types.ObjectId, ref: "Datastream" }]
 });
 
 var Things = mongoose.model('Things', ThingsSchema);

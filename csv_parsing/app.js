@@ -9,7 +9,8 @@ const { mongoose } = require('./db/mongoose'); // ES6 object destructuring
 const { Things } = require('./models/Things');
 const { Observations } = require('./models/Observations');
 const { Locations } = require('./models/Locations');
-const { Sensors } = require('./models/Sensors');
+const { Sensor } = require('./models/Sensor');
+const { Datastream } = require("./models/DataStream");
 
 var app = express();
 
@@ -175,6 +176,29 @@ app.post("/Sensors", (req, res) => {
       "Datastreams@iot.navigationLink": `localhost:3000/Sensors/${sensor._id}/Datastreams`
     }));
   }, (error) => res.status(400).send("Error creating a new sensor"));
+});
+
+app.post("/Datastreams", (req, res) => {
+  const { name, description, unitOfMeasurement, observationType } = req.body;
+  const newDatastream = new Datastream({
+    name,
+    description,
+    unitOfMeasurement,
+    observationType
+  });
+  newDatastream.save().then((datastream) => {
+    res.send(datastream.toObject());
+  }).catch((error) => res.status(400).send(error));
+});
+
+// create a datastream and link to a thing entity.
+app.post("Thing/:id/Datastream", (req, res) => {
+  if (req.body["Sensor"]) {
+    var newSensor = new Sensor(req.body["Sensor"]);
+    newSensor.save().then((sensor) => {
+      
+    });
+  }
 });
 
 app.get('/observations', (req, res) => {
